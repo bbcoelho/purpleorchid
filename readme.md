@@ -1,0 +1,1 @@
+Developing a SPA to automate a buying process of a friend's restaurant chain
