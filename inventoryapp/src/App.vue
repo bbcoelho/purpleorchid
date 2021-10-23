@@ -43,9 +43,9 @@ export default {
   methods: {
 
     inventoryCall($event) {
-      this.workingStore = $event;
       this.homeVisible = false;
       this.inventoryVisible = true;
+      this.workingStore = $event;
     }
   }
 

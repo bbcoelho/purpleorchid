@@ -8,7 +8,7 @@
       <h3 v-if='store == "POD"'>Purple Orchid Downtown</h3>
     </div>
 
-    <h1 class='item' v-text='inventoryItems[1].item'></h1>
+    <h1 class='item' v-text='countingItem'></h1>
 
     <form>
       <div class='fields'>
@@ -27,8 +27,8 @@
       </div>
 
       <div class='centralized'>
-        <appButton buttonType='button' label='< PREV. ITEM'/>
-        <appButton buttonType='button' label='NEXT ITEM >'/>
+        <appButton buttonType='button' label='< PREV. ITEM' v-on:buttonActivated='previousItem'/>
+        <appButton buttonType='button' label='NEXT ITEM >' v-on:buttonActivated='nextItem'/>
 
       </div>
 
@@ -62,12 +62,76 @@
         window.location = '/';
       },
 
+      showFirstItem() {
+        while (this.inventoryItems[this.i].store != this.store && this.i < this.inventoryItems.length) {
+          this.i++;
+          alert(this.i);
+        }
+        if (this.i < this.inventoryItems.length) {                       // saiu pq encontrou um item; evitar referencia a indice alem do array
+          this.countingItem = this.inventoryItems[this.i].item;
+        }
+        else {
+          this.i = this.inventoryItems.length - 1;                       // saiu pq chegou ao final e avancou alem do final; volta pro final
+          alert(this.i);
+        }
+      },
+
+      nextItem() {
+        this.i++;       
+        alert(this.i);                                                 // incrementa 1
+        if (this.i < this.inventoryItems.length) {                       // verificar se nao estava no final
+          while (this.i < this.inventoryItems.length && this.inventoryItems[this.i].store != this.store) {
+            this.i++;
+            alert(this.i);
+          }
+          if (this.i < this.inventoryItems.length) {                     // saiu pq encontrou um item; evitar referencia a indice alem do array
+            alert('testando2');
+            this.countingItem = this.inventoryItems[this.i].item;
+          }
+          else {
+            alert('testando');
+            this.i--;                     // saiu pq chegou ao final e avancou alem do final; volta pro final
+            alert(this.i);
+          }
+        }
+        else {
+          this.i--;                       // ja estava no final e avancou alem do final; volta pro final
+          alert(this.i);
+        }
+      },
+
+      previousItem() {
+        this.i--;                                                        // decrementa 1
+        alert(this.i);
+        if (this.i >= 0) {                                               // verificar se nao estava no comeco
+          while (this.i >= 0 && this.inventoryItems[this.i].store != this.store) {
+            this.i--;
+            alert(this.i);
+          }
+          if (this.i >= 0) {                                             // saiu pq encontrou um item; evitar referencia a indice negativo
+            this.countingItem = this.inventoryItems[this.i].item;
+          }
+          else {
+            this.i++;                     // saiu pq chegou ao inicio e avancou alem do inicio; volta pro inicio
+            alert(this.i);
+          }
+        }
+        else {
+          this.i++;                       // ja estava no inicio e avancou alem do inicio; volta pro inicio
+          alert(this.i);
+        }
+      }
+
     },
 
     data() {
 
       return {
         inventoryItems: [],
+        countingItem: '',
+        i: 0,
+        forward: true,
+        backward: false
       };
 
     },
@@ -77,7 +141,7 @@
       store: {
         type: String,
         default: '',
-      }
+      },
 
     },
 
@@ -85,7 +149,13 @@
       this.$http.get('http://localhost:3000/inventory/')
         .then(res => res.json())
         .then(res2 => this.inventoryItems = res2, err => console.log(err));
-    }
+    },
+
+    watch: {
+      store(newValue) {
+        this.showFirstItem();
+      }
+    }   
 
   }
 
