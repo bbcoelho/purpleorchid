@@ -13,17 +13,17 @@
     <form>
       <div class='fields'>
         <label for='qty'>QUANTITY</label>
-        <input id='qty' autocomplete='off' v-on:input='inventoryItems[lastFoundItemIndex].iteminventory = $event.target.value' v-bind:value='inventoryItems[lastFoundItemIndex].iteminventory'>
+        <input id='qty' autocomplete='off' v-on:input='inventoryItems[lastFoundItemIndex].iteminventory = $event.target.value' v-bind:value='shownItem.quantity'>
       </div>
 
       <div class='fields'>
         <label for='toorder'>TO ORDER</label>
-        <input id='toorder' autocomplete='off' v-on:input='inventoryItems[lastFoundItemIndex].toorder = $event.target.value' v-bind:value='inventoryItems[lastFoundItemIndex].toorder'>
+        <input id='toorder' autocomplete='off' v-on:input='inventoryItems[lastFoundItemIndex].toorder = $event.target.value' v-bind:value='shownItem.toorder'>
       </div>
 
       <div class='fields'>
         <label for='obs'>OBS.:</label>
-        <textarea id='obs' autocomplete='off' v-on:input='inventoryItems[lastFoundItemIndex].obs = $event.target.value' v-bind:value='inventoryItems[lastFoundItemIndex].obs'></textarea>
+        <textarea id='obs' autocomplete='off' v-on:input='inventoryItems[lastFoundItemIndex].obs = $event.target.value' v-bind:value='shownItem.obs'></textarea>
       </div>
 
       <div class='centralized'>
@@ -58,7 +58,12 @@
         inventoryItems: [],
         countingItem: "",
         inventoryItemIndex: 0,
-        lastFoundItemIndex: 0
+        lastFoundItemIndex: 0,
+        shownItem: {
+          quantity: "",
+          toorder: "",
+          obs: ""
+        }
       };
 
     },
@@ -89,6 +94,10 @@
         if (this.inventoryItemIndex < this.inventoryItems.length) {                      // updates "countingItem" just when exiting from WHILE by an item found
           this.lastFoundItemIndex = this.inventoryItemIndex;
           this.countingItem = this.inventoryItems[this.inventoryItemIndex].item;
+                                                                                         // updates values shown in form
+          this.shownItem.quantity = this.inventoryItems[this.lastFoundItemIndex].iteminventory;
+          this.shownItem.toorder = this.inventoryItems[this.lastFoundItemIndex].toorder;
+          this.shownItem.obs = this.inventoryItems[this.lastFoundItemIndex].obs;
         }
         else {
           this.inventoryItemIndex--;                                                     // avoids index reference error when exiting from WHILE by reaching array's end
@@ -103,6 +112,11 @@
         if (this.inventoryItemIndex < this.inventoryItems.length) {                     // updates "countingItem" just when exiting from WHILE by an item found
           this.lastFoundItemIndex = this.inventoryItemIndex;
           this.countingItem = this.inventoryItems[this.inventoryItemIndex].item;
+                                                                                         // updates values shown in form
+          this.shownItem.quantity = this.inventoryItems[this.lastFoundItemIndex].iteminventory;
+          this.shownItem.toorder = this.inventoryItems[this.lastFoundItemIndex].toorder;
+          this.shownItem.obs = this.inventoryItems[this.lastFoundItemIndex].obs;
+
         }
         else {
           this.inventoryItemIndex--;                                                    // avoids index reference error when exiting from WHILE by exceeding array's end
@@ -118,6 +132,10 @@
         if (this.inventoryItemIndex >= 0) {                                             // updates "countingItem" just when exiting from WHILE by an item found
           this.lastFoundItemIndex = this.inventoryItemIndex;
           this.countingItem = this.inventoryItems[this.inventoryItemIndex].item;
+                                                                                         // updates values shown in form
+          this.shownItem.quantity = this.inventoryItems[this.lastFoundItemIndex].iteminventory;
+          this.shownItem.toorder = this.inventoryItems[this.lastFoundItemIndex].toorder;
+          this.shownItem.obs = this.inventoryItems[this.lastFoundItemIndex].obs;
         }
         else {
           this.inventoryItemIndex++;                                                    // avoids index reference error when exiting from WHILE by exceeding array's beginning
@@ -134,6 +152,17 @@
 
     watch: {
       store(newValue) {
+        let i = 0;
+        while (i < this.inventoryItems.length) {
+          if (this.inventoryItems[i].store != newValue) {
+            this.inventoryItems.splice(i, 1);
+            i = 0;
+          }
+          else {
+            i++;
+          }
+        }
+        console.log(this.inventoryItems);
         this.showFirstItem();
       }
     }   
