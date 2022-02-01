@@ -8,39 +8,58 @@
       <h3 v-if='store == "POD"'>Purple Orchid Downtown</h3>
     </div>
 
-    <h1 class='item' v-text='countingItem'></h1>
+    <h1 class='item' v-text='shownItem.item'></h1>
+    
+    <ValidationObserver v-slot='{ invalid }'>
+      <form>
+        <ValidationProvider name='QUANTITY' rules='required|numeric' v-slot='{ errors }'>
+          <div class='fields'>
+            <label for='quantity'>QUANTITY</label>
+            <input id='quantity' autocomplete='off' v-model='shownItem.quantity'><br>
+            <span class='error'>{{ errors[0] }}</span>
+          </div>
+        </ValidationProvider>
 
-    <form>
-      <div class='fields'>
-        <label for='qty'>QUANTITY</label>
-        <input id='qty' autocomplete='off' v-on:input='inventoryItems[lastFoundItemIndex].iteminventory = $event.target.value' v-bind:value='shownItem.quantity'>
-      </div>
+        <ValidationProvider name='TO ORDER' rules='required|numeric' v-slot='{ errors }'>
+          <div class='fields'>
+            <label for='toorder'>TO ORDER</label>
+            <input id='toorder' autocomplete='off' v-model='shownItem.toorder'><br>
+            <span class='error'>{{ errors[0] }}</span>
+          </div>
+        </ValidationProvider>
 
-      <div class='fields'>
-        <label for='toorder'>TO ORDER</label>
-        <input id='toorder' autocomplete='off' v-on:input='inventoryItems[lastFoundItemIndex].toorder = $event.target.value' v-bind:value='shownItem.toorder'>
-      </div>
+        <div class='fields'>
+          <label for='obs'>OBS.:</label>
+          <textarea id='obs' autocomplete='off' v-model='shownItem.obs'></textarea>
+        </div>
 
-      <div class='fields'>
-        <label for='obs'>OBS.:</label>
-        <textarea id='obs' autocomplete='off' v-on:input='inventoryItems[lastFoundItemIndex].obs = $event.target.value' v-bind:value='shownItem.obs'></textarea>
-      </div>
+        <div class='centralized'>
+          <appButton buttonType='button' label='< PREV. ITEM' v-on:buttonActivated='previousItem' v-bind:buttonDisabled='invalid'/>
+          <appButton buttonType='button' label='NEXT ITEM >' v-on:buttonActivated='nextItem' v-bind:buttonDisabled='invalid'/>
+        </div>
 
-      <div class='centralized'>
-        <appButton buttonType='button' label='< PREV. ITEM' v-on:buttonActivated='previousItem'/>
-        <appButton buttonType='button' label='NEXT ITEM >' v-on:buttonActivated='nextItem'/>
+      </form>
+    </ValidationObserver>
 
-      </div>
-
-    </form>
-
-    <appButton 
-      buttonType='button' 
-      label='RE-START' 
-      v-on:buttonActivated='restart'
-      v-bind:confirmAction='true'
-      buttonCSS='attention'
+    <div class='restartsavebuttons'>
+      <appButton 
+        buttonType='button' 
+        label='RE-START'
+        v-show='true'
+        v-on:buttonActivated='restart'
+        v-bind:confirmAction='true'
+        buttonCSS='attention'
       />
+
+      <appButton 
+        buttonType='button' 
+        label='SAVE'
+        v-show='this.inventoryItemIndex == this.inventoryItems.length - 1'                  
+        v-on:buttonActivated='save'
+        v-bind:confirmAction='true'
+        buttonCSS='attention'
+      />
+    </div>
 
   </div>
 </template>
@@ -49,6 +68,7 @@
 <script>
 
   import Button from '../shared/button/Button.vue';
+  import moment from 'moment';
 
   export default {
     
@@ -56,10 +76,9 @@
 
       return {
         inventoryItems: [],
-        countingItem: "",
         inventoryItemIndex: 0,
-        lastFoundItemIndex: 0,
         shownItem: {
+          item: "",
           quantity: "",
           toorder: "",
           obs: ""
@@ -87,58 +106,47 @@
         window.location = '/';
       },
 
-      showFirstItem() {
-        while (this.inventoryItemIndex < this.inventoryItems.length && this.inventoryItems[this.inventoryItemIndex].store != this.store) {
-          this.inventoryItemIndex++;
-        }
-        if (this.inventoryItemIndex < this.inventoryItems.length) {                      // updates "countingItem" just when exiting from WHILE by an item found
-          this.lastFoundItemIndex = this.inventoryItemIndex;
-          this.countingItem = this.inventoryItems[this.inventoryItemIndex].item;
-                                                                                         // updates values shown in form
-          this.shownItem.quantity = this.inventoryItems[this.lastFoundItemIndex].iteminventory;
-          this.shownItem.toorder = this.inventoryItems[this.lastFoundItemIndex].toorder;
-          this.shownItem.obs = this.inventoryItems[this.lastFoundItemIndex].obs;
-        }
-        else {
-          this.inventoryItemIndex--;                                                     // avoids index reference error when exiting from WHILE by reaching array's end
+      showItem() {
+        if (this.inventoryItems.length > 0) {
+          this.shownItem.item = this.inventoryItems[this.inventoryItemIndex].item;
+          this.shownItem.quantity = this.inventoryItems[this.inventoryItemIndex].iteminventory;
+          this.shownItem.toorder = this.inventoryItems[this.inventoryItemIndex].toorder;
+          this.shownItem.obs = this.inventoryItems[this.inventoryItemIndex].obs;
         }
       },
 
       nextItem() {
-        this.inventoryItemIndex = this.lastFoundItemIndex + 1;       
-        while (this.inventoryItemIndex < this.inventoryItems.length && this.inventoryItems[this.inventoryItemIndex].store != this.store) {
-          this.inventoryItemIndex++;
-        }
-        if (this.inventoryItemIndex < this.inventoryItems.length) {                     // updates "countingItem" just when exiting from WHILE by an item found
-          this.lastFoundItemIndex = this.inventoryItemIndex;
-          this.countingItem = this.inventoryItems[this.inventoryItemIndex].item;
-                                                                                         // updates values shown in form
-          this.shownItem.quantity = this.inventoryItems[this.lastFoundItemIndex].iteminventory;
-          this.shownItem.toorder = this.inventoryItems[this.lastFoundItemIndex].toorder;
-          this.shownItem.obs = this.inventoryItems[this.lastFoundItemIndex].obs;
+        this.inventoryItems[this.inventoryItemIndex].item = this.shownItem.item;
+        this.inventoryItems[this.inventoryItemIndex].iteminventory = this.shownItem.quantity;
+        this.inventoryItems[this.inventoryItemIndex].toorder = this.shownItem.toorder;
+        this.inventoryItems[this.inventoryItemIndex].obs = this.shownItem.obs;
 
+        if (this.inventoryItemIndex < this.inventoryItems.length - 1) {
+          this.inventoryItemIndex++;
+          this.showItem();   
         }
-        else {
-          this.inventoryItemIndex--;                                                    // avoids index reference error when exiting from WHILE by exceeding array's end
-        }
-        
       },
 
       previousItem() {
-        this.inventoryItemIndex = this.lastFoundItemIndex - 1;
-        while (this.inventoryItemIndex >= 0 && this.inventoryItems[this.inventoryItemIndex].store != this.store) {
+        this.inventoryItems[this.inventoryItemIndex].item = this.shownItem.item;
+        this.inventoryItems[this.inventoryItemIndex].iteminventory = this.shownItem.quantity;
+        this.inventoryItems[this.inventoryItemIndex].toorder = this.shownItem.toorder;
+        this.inventoryItems[this.inventoryItemIndex].obs = this.shownItem.obs;
+
+        if (this.inventoryItemIndex > 0) {
           this.inventoryItemIndex--;
+          this.showItem();
         }
-        if (this.inventoryItemIndex >= 0) {                                             // updates "countingItem" just when exiting from WHILE by an item found
-          this.lastFoundItemIndex = this.inventoryItemIndex;
-          this.countingItem = this.inventoryItems[this.inventoryItemIndex].item;
-                                                                                         // updates values shown in form
-          this.shownItem.quantity = this.inventoryItems[this.lastFoundItemIndex].iteminventory;
-          this.shownItem.toorder = this.inventoryItems[this.lastFoundItemIndex].toorder;
-          this.shownItem.obs = this.inventoryItems[this.lastFoundItemIndex].obs;
-        }
-        else {
-          this.inventoryItemIndex++;                                                    // avoids index reference error when exiting from WHILE by exceeding array's beginning
+      },
+
+      save() {
+        for (let i = 0; i < this.inventoryItems.length; i++) {
+          this.inventoryItems[i].iteminventory = parseFloat(this.inventoryItems[i].iteminventory);
+          this.inventoryItems[i].toorder = parseFloat(this.inventoryItems[i].toorder);
+          this.inventoryItems[i].inventorydate = moment().format('YYYY-MM-DD HH:mm:ss');
+
+          this.$http.patch('http://localhost:3000/inventory/' + this.inventoryItems[i].id, {iteminventory: this.inventoryItems[i].iteminventory, toorder: this.inventoryItems[i].toorder, obs: this.inventoryItems[i].obs, inventorydate: this.inventoryItems[i].inventorydate})
+            .then(res => console.log(res.body));
         }
       }
 
@@ -156,14 +164,13 @@
         while (i < this.inventoryItems.length) {
           if (this.inventoryItems[i].store != newValue) {
             this.inventoryItems.splice(i, 1);
-            i = 0;
+//            i = 0;
           }
           else {
             i++;
           }
         }
-        console.log(this.inventoryItems);
-        this.showFirstItem();
+        this.showItem();
       }
     }   
 
@@ -209,6 +216,16 @@
     width: 50%;
     font-size: inherit;
     border-radius: 5px
+  }
+
+  .restartsavebuttons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .error {
+    color: red;
+    font-style: italic;
   }
 
 </style>

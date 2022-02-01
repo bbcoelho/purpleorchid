@@ -1,6 +1,6 @@
 <template>
 
-  <button v-on:click='actionTrigger' class='button' v-bind:class='buttonStyle' v-bind:type='buttonType'>{{ label }}</button>
+  <button v-on:click='actionTrigger' v-bind:disabled='buttonDisabled' class='button' v-bind:class='buttonStyle' v-bind:type='buttonType'>{{ label }}</button>
     
 </template>
 
@@ -22,6 +22,7 @@
       },
 
       confirmAction: Boolean,
+      buttonDisabled: Boolean,
       buttonCSS: String
 
     },
@@ -44,11 +45,14 @@
     computed: {
 
       buttonStyle() {
-
-        if(this.buttonCSS == 'default' || !this.buttonCSS)
-          return 'default';
-        if(this.buttonCSS == 'attention')
-          return 'attention';
+        if(this.buttonDisabled)
+          return 'disabled';
+        else{
+          if(this.buttonCSS == 'default' || !this.buttonCSS)
+            return 'default';
+          if(this.buttonCSS == 'attention')
+            return 'attention';
+        }
       }
 
     }
@@ -66,6 +70,11 @@
         border-radius: 3px;
         margin: 10px;
         font-size: 1.2em;
+    }
+
+    .disabled {
+        background: grey;
+        color: black;
     }
 
     .attention {
