@@ -7,7 +7,7 @@ A real case project to direct my studies in this career change and help a friend
 
 ### STATUS: ![underconstruction](https://user-images.githubusercontent.com/86386851/152597573-6f43a21c-852d-4bcb-bce9-8cae017f461f.png)
 <h1></h1>
-<h3>:hammer: Features:</h3>
+<h3>:hammer: FEATURES:</h3>
 - Product Registration: started :construction_worker: <br>
 - Inventory Count: done :heavy_check_mark: <br>
 - Consolidated Buying Orders: not started :soon:
