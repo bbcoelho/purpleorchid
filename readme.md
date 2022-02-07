@@ -10,8 +10,8 @@ A real case project to direct my studies in this career change and help a friend
 <h3>:hammer: FEATURES:</h3>
 - Product Registration: started :construction_worker: <br>
 - Inventory Count: done :heavy_check_mark: <br>
-- Consolidated Buying Orders: not started :soon:
-- Full Responsive: not started :soon:
+- Consolidated Buying Orders: not started :soon: <br>
+- Full Responsive: not started :soon: <br>
 - Mobile Version: not started / on future
 
 #
