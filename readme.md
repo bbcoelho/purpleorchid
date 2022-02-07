@@ -3,7 +3,7 @@
 </p>
 <h1 align="center"> Purple Orchid Smoothie & Juice Bar </h1>
 
-A real case project to direct my studies in this career change and help a friend. Developing a SPA to automate a buying process of a friend's restaurant chain.
+A real case project to direct my studies in this career change and help a friend. Developing an SPA to automate a buying process of a friend's restaurant chain.
 
 ### STATUS: ![underconstruction](https://user-images.githubusercontent.com/86386851/152597573-6f43a21c-852d-4bcb-bce9-8cae017f461f.png)
 #
@@ -11,6 +11,8 @@ A real case project to direct my studies in this career change and help a friend
 - Product Registration: started :construction_worker: <br>
 - Inventory Count: done :heavy_check_mark: <br>
 - Consolidated Buying Orders: not started :soon:
+- Full Responsive: not started :soon:
+- Mobile Version: not started / on future
 
 #
 <h3>:wrench: USING:</h3> Vue.js / Node.js / MySQL <br>
