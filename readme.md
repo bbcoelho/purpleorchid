@@ -20,6 +20,6 @@ A real case project to direct my studies in this career change and help a friend
 </p>
 
 #
-<h3>app working...</h3><br>
+<h3>APP WORKING...</h3><br>
 
 ![app working](https://user-images.githubusercontent.com/86386851/152708990-9e3e1969-026c-4451-9d3e-bd937ae5ebbc.gif)
