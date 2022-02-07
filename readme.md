@@ -18,3 +18,8 @@ A real case project to direct my studies in this career change and help a friend
 <p align="center">
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="160" height="100"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original-wordmark.svg" width="160" height="100"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original-wordmark.svg" width="160" height="100"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" width="160" height="100"/>
 </p>
+
+#
+<h3>app working...</h3><br>
+
+![app working](https://user-images.githubusercontent.com/86386851/152708990-9e3e1969-026c-4451-9d3e-bd937ae5ebbc.gif)
