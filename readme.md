@@ -3,7 +3,7 @@
 </p>
 <h1 align="center"> Purple Orchid Smoothie & Juice Bar </h1>
 
-A real case project to direct my studies in this career change and help a friend. Developing a single page application and a REST API with MySQL to automate a buying process of a friend's restaurant chain.
+A real case project to direct my studies in this career change and help a friend. Developing a SINGLE PAGE APPLICATION and a REST API with MySQL to automate a buying process of a friend's restaurant chain.
 
 ### STATUS: ![underconstruction](https://user-images.githubusercontent.com/86386851/152597573-6f43a21c-852d-4bcb-bce9-8cae017f461f.png)
 #
