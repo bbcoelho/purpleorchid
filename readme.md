@@ -5,6 +5,10 @@
 
 A real case project to direct my studies in this career change and help a friend. Developing a SINGLE PAGE APPLICATION and a REST API with MySQL to automate a buying process of a friend's restaurant chain.
 
+<p align="center">
+<img src="https://user-images.githubusercontent.com/86386851/154600558-b6f391f3-838f-46e5-be3b-f223dcae383b.jpeg"/>
+</p>
+
 ### STATUS: ![underconstruction](https://user-images.githubusercontent.com/86386851/152597573-6f43a21c-852d-4bcb-bce9-8cae017f461f.png)
 #
 <h3>:hammer: FEATURES:</h3>
